@@ -9,7 +9,7 @@
 import UIKit
 
 class SecondViewController: UIViewController,UITextFieldDelegate {
-
+    
     @IBOutlet weak var textFieldArea: UITextField!
     
     @IBAction func save(_ sender: Any) {
@@ -18,37 +18,48 @@ class SecondViewController: UIViewController,UITextFieldDelegate {
         
         var tasks:[String]
         
-        if let tasksArr = taskObj as? [String]
-        {
-            tasks = tasksArr
+        let tasksArr = taskObj as? [String]
+        
+        if (textFieldArea.text == ""){
+            
+            
+            // create the alert
+            let alert = UIAlertController(title: "Dikkat", message: "Lütfen içerik giriniz.", preferredStyle: UIAlertControllerStyle.alert)
+            
+            // add an action (button)
+            alert.addAction(UIAlertAction(title: "Tamam", style: UIAlertActionStyle.default, handler: nil))
+            
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+        }
+            
+        else{
+            tasks = tasksArr!
             tasks.append(textFieldArea.text!)
             
-            print(tasks)
+            print("Eklenen: \(tasks)")
+            
+            
+            UserDefaults.standard.set(tasks, forKey: "tasks")
+            
+            textFieldArea.text = ""
         }
         
-        else
-        {
-             tasks = [textFieldArea.text!]
-        }
-        
-        UserDefaults.standard.set(tasks, forKey: "tasks")
-        
-        textFieldArea.text = ""
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-
+    
 }
 

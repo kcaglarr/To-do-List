@@ -46,5 +46,30 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return cell
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete
+        {
+            //Alertview kullanılmalı
+            // create the alert
+            let alert = UIAlertController(title: "Dikkat", message: "Bunu silmek istediğinizden emin misiniz?", preferredStyle: UIAlertControllerStyle.alert)
+            
+            // add the actions (buttons)
+            alert.addAction(UIAlertAction(title: "Evet", style: UIAlertActionStyle.default, handler: {action in
+                self.tasks.remove(at: indexPath.row)
+                self.tblView.reloadData()
+                UserDefaults.standard.set(self.tasks, forKey: "tasks")
+
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Hayır", style: UIAlertActionStyle.cancel, handler: nil))
+            
+            // show the alert
+            self.present(alert, animated: true, completion: nil)
+            
+
+        }
+    }
+    
 }
 
